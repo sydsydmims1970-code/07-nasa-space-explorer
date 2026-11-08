@@ -19,8 +19,10 @@
     <form class="filters" id="dateForm">
       <label for="startDate">From<input type="date" id="startDate" required /></label>
       <label for="endDate">Through<input type="date" id="endDate" required /></label>
+      <label for="apiKey">NASA API key (optional)<input type="password" id="apiKey" placeholder="DEMO_KEY" autocomplete="off" /></label>
       <button type="submit" id="loadButton">Get Space Images</button>
     </form>
+    <p class="key-note">A personal key may be needed for real APOD photos. <a href="https://api.nasa.gov/" target="_blank" rel="noreferrer">Get a free NASA API key</a>. This page does not save it.</p>
 
     <div id="gallery" class="gallery" aria-live="polite" aria-busy="false">
       <div class="placeholder">

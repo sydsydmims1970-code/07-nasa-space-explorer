@@ -4,6 +4,7 @@ const endInput = document.getElementById('endDate');
 const dateForm = document.getElementById('dateForm');
 const gallery = document.getElementById('gallery');
 const loadButton = document.getElementById('loadButton');
+const apiKeyInput = document.getElementById('apiKey');
 const photoModal = document.getElementById('photoModal');
 const modalImage = document.getElementById('modalImage');
 const modalDate = document.getElementById('modalDate');
@@ -33,7 +34,7 @@ dateForm.addEventListener('submit', async (event) => {
 	const apiUrl = new URL('https://api.nasa.gov/planetary/apod');
 	apiUrl.searchParams.set('start_date', startInput.value);
 	apiUrl.searchParams.set('end_date', endInput.value);
-	apiUrl.searchParams.set('api_key', 'DEMO_KEY');
+	apiUrl.searchParams.set('api_key', apiKeyInput.value.trim() || 'DEMO_KEY');
 
 	try {
 		const response = await fetch(apiUrl);
@@ -43,6 +44,15 @@ dateForm.addEventListener('submit', async (event) => {
 		}
 
 		const photos = await response.json();
+		const hasDemoPlaceholder = photos.some((photo) =>
+			photo.title === 'NASA Science' && photo.url?.includes('nasa-logo@2x.png')
+		);
+
+		if (hasDemoPlaceholder) {
+			showMessage('NASA returned its generic demo image instead of APOD photos. Enter a personal NASA API key above and try again.');
+			return;
+		}
+
 		const imagePhotos = photos.filter((photo) => photo.media_type === 'image');
 
 		if (imagePhotos.length === 0) {
