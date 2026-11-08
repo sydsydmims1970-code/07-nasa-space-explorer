@@ -27,6 +27,13 @@ dateForm.addEventListener('submit', async (event) => {
 		return;
 	}
 
+	const personalApiKey = apiKeyInput.value.trim();
+
+	if (!personalApiKey || personalApiKey === 'DEMO_KEY') {
+		showMessage('Enter your personal NASA API key. The DEMO_KEY is currently returning a generic image.');
+		return;
+	}
+
 	gallery.setAttribute('aria-busy', 'true');
 	gallery.innerHTML = '<div class="placeholder"><p>Loading space photos...</p></div>';
 	loadButton.disabled = true;
@@ -34,22 +41,23 @@ dateForm.addEventListener('submit', async (event) => {
 	const apiUrl = new URL('https://api.nasa.gov/planetary/apod');
 	apiUrl.searchParams.set('start_date', startInput.value);
 	apiUrl.searchParams.set('end_date', endInput.value);
-	apiUrl.searchParams.set('api_key', apiKeyInput.value.trim() || 'DEMO_KEY');
+	apiUrl.searchParams.set('api_key', personalApiKey);
 
 	try {
 		const response = await fetch(apiUrl);
+		const responseData = await response.json();
 
 		if (!response.ok) {
-			throw new Error('NASA could not load those photos. Please try again.');
+			throw new Error(responseData.error?.message || 'NASA could not load those photos. Please try again.');
 		}
 
-		const photos = await response.json();
+		const photos = responseData;
 		const hasDemoPlaceholder = photos.some((photo) =>
 			photo.title === 'NASA Science' && photo.url?.includes('nasa-logo@2x.png')
 		);
 
 		if (hasDemoPlaceholder) {
-			showMessage('NASA returned its generic demo image instead of APOD photos. Enter a personal NASA API key above and try again.');
+			showMessage('NASA still returned its generic image. Check that the field contains your newly generated personal key, not DEMO_KEY, then try again.');
 			return;
 		}
 
