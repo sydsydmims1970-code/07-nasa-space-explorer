@@ -4,6 +4,6 @@ Browse NASA's Astronomy Picture of the Day (APOD) by date range. Select dates, l
 ## Run the app
 Open `index.html` in a browser. The date inputs default to the most recent nine days, and the gallery uses NASA's APOD API.
 
-The app starts with NASA's shared `DEMO_KEY`, which has a low request limit. For regular use, request a personal key at [api.nasa.gov](https://api.nasa.gov/) and replace the `apiKey` value near the top of `js/script.js`.
+Enter a personal key from [api.nasa.gov](https://api.nasa.gov/) in the form before loading photos. NASA's shared `DEMO_KEY` currently returns a generic placeholder instead of APOD content. Keys entered in the form are used for that request only and are not saved.
 
 The date controls are limited to APOD's archive dates by `js/dateRange.js`. APOD can return videos as well as images; video entries with thumbnails appear in the gallery and link to the original video from the details dialog.

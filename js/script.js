@@ -4,7 +4,7 @@ const dateForm = document.getElementById('dateForm');
 const gallery = document.getElementById('gallery');
 const statusMessage = document.getElementById('status');
 const submitButton = dateForm.querySelector('button[type="submit"]');
-const apiKey = 'DEMO_KEY';
+const apiKeyInput = document.getElementById('apiKey');
 
 setupDateInputs(startInput, endInput);
 
@@ -89,6 +89,12 @@ async function loadPhotos(event) {
 		return;
 	}
 
+	const apiKey = apiKeyInput.value.trim();
+	if (!apiKey || apiKey === 'DEMO_KEY') {
+		showStatus('Enter your personal NASA API key. The shared demo key is returning a generic image.', 'error');
+		return;
+	}
+
 	// Ask APOD for the selected dates and thumbnails for video entries.
 	const params = new URLSearchParams({ start_date: startDate, end_date: endDate, thumbs: 'true', api_key: apiKey });
 	const apiUrl = `https://api.nasa.gov/planetary/apod?${params}`;
@@ -99,11 +105,21 @@ async function loadPhotos(event) {
 
 	try {
 		const response = await fetch(apiUrl);
-		if (!response.ok) throw new Error(`NASA's API returned an error (${response.status}).`);
+		const result = await response.json();
+		if (!response.ok) {
+			throw new Error(result.error?.message || `NASA's API returned an error (${response.status}).`);
+		}
 
 		// APOD returns an array for a date range and one object for a single date.
-		const result = await response.json();
 		const photos = Array.isArray(result) ? result : [result];
+		const hasDemoPlaceholder = photos.some((photo) => (
+			photo.title === 'NASA Science' && photo.url?.includes('nasa-logo@2x.png')
+		));
+		if (hasDemoPlaceholder) {
+			showStatus('NASA returned its generic demo image instead of APOD photos. Check your API key and try again.', 'error');
+			return;
+		}
+
 		const displayablePhotos = photos.filter((photo) => (
 			photo.media_type === 'image' || (photo.media_type === 'video' && photo.thumbnail_url)
 		));

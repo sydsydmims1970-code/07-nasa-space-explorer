@@ -101,6 +101,17 @@ input[type="date"] {
   background: var(--surface);
 }
 
+input[type="password"] {
+  min-width: 190px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+}
+
 button[type="submit"] {
   min-height: 46px;
   padding: 0 20px;
@@ -142,6 +153,17 @@ button:disabled {
 
 .status.empty {
   color: #ffd36a;
+}
+
+.key-note {
+  margin: 0 auto;
+  max-width: 900px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.key-note a {
+  color: #ff988f;
 }
 
 /* Gallery flex container */

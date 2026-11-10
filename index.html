@@ -26,8 +26,13 @@
           <span>Through</span>
           <input type="date" id="endDate" required />
         </label>
+        <label>
+          <span>NASA API key</span>
+          <input type="password" id="apiKey" placeholder="Paste your personal key" autocomplete="off" />
+        </label>
         <button type="submit">Get Space Images</button>
       </form>
+      <p class="key-note">NASA's shared demo key is currently returning a generic image. <a href="https://api.nasa.gov/" target="_blank" rel="noopener noreferrer">Get a free personal key</a>. It is not saved by this page.</p>
 
       <p id="status" class="status" role="status" aria-live="polite">Select a date range to explore the cosmos.</p>
       <section id="gallery" class="gallery" aria-label="Astronomy pictures"></section>
