@@ -116,7 +116,7 @@ async function loadPhotos(event) {
 			photo.title === 'NASA Science' && photo.url?.includes('nasa-logo@2x.png')
 		));
 		if (hasDemoPlaceholder) {
-			showStatus('NASA returned its generic demo image instead of APOD photos. Check your API key and try again.', 'error');
+			showStatus('NASA returned its generic placeholder instead of APOD photos. This is not the invalid-key response; try again later rather than generating another key.', 'error');
 			return;
 		}
 
